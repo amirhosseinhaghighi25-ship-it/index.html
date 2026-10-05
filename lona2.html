@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cafe Luna</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Vazirmatn;background:#faf8f5;color:#302923;line-height:1.8}
+a{text-decoration:none;color:inherit}
+button,input,textarea{font:inherit}
+.container{width:90%;max-width:1100px;margin:auto}
+header{position:fixed;top:0;width:100%;z-index:9;background:#241a15ee}
+nav{height:70px;display:flex;align-items:center;justify-content:space-between}
+.logo,.hero span,.title span{color:#d9a86c;font-weight:bold}
+.logo{font-size:22px}
+.nav{display:flex;gap:20px;list-style:none;color:#fff}
+.nav a:hover{color:#d9a86c}
+.actions{display:flex;gap:13px;align-items:center;color:#fff}
+.actions i{cursor:pointer}
+.actions b{background:#b8783d;border-radius:50%;padding:1px 6px;font-size:10px}
+.menu{display:none}
+
+.hero{height:100vh;display:grid;place-items:center;text-align:center;color:#fff;background:linear-gradient(#19120eaa,#19120edd),url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1800&q=80") center/cover}
+.hero h1{font-size:clamp(40px,7vw,70px);line-height:1.3;margin:15px}
+.hero p{margin-bottom:25px}
+.btn{display:inline-block;border:0;background:#b8783d;color:#fff;padding:10px 24px;border-radius:25px;cursor:pointer}
+.btn:hover{background:#d99a5a}
+section{padding:75px 0}
+.title{text-align:center;margin-bottom:35px}
+.title h2{font-size:32px}
+.title p,.product p{color:#777}
+
+.ad{margin-top:-35px;position:relative;background:#b8783d;color:#fff;padding:25px 30px;border-radius:18px;display:flex;justify-content:space-between;align-items:center}
+.ad .btn{background:#fff;color:#b8783d}
+
+.about,.contactGrid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.about img{width:100%;height:350px;object-fit:cover;border-radius:18px}
+.features{display:flex;gap:10px;margin-top:20px}
+.features div{flex:1;text-align:center;background:#faf3eb;padding:13px;border-radius:10px}
+
+.shop{background:#f5f1ec}
+.search{max-width:600px;margin:auto;position:relative}
+.search input{width:100%;padding:13px 45px 13px 15px;border:1px solid #ddd;border-radius:25px;outline:0}
+.search i{position:absolute;right:18px;top:15px;color:#b8783d}
+.filters{text-align:center;margin:20px 0}
+.filters button{border:1px solid #d8c4b0;background:#fff;padding:8px 17px;border-radius:20px;cursor:pointer;margin:3px}
+.filters .active,.filters button:hover{background:#b8783d;color:#fff}
+
+.products{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.product{background:#fff;border-radius:15px;overflow:hidden;position:relative;box-shadow:0 4px 15px #0001}
+.product img{width:100%;height:190px;object-fit:cover}
+.product div{padding:17px}
+.product p{font-size:13px}
+.product strong{display:block;color:#b8783d;margin:7px 0}
+.product .btn{width:100%}
+.sale{position:absolute;top:10px;left:10px;background:#a94735;color:#fff;padding:3px 10px;border-radius:15px;font-size:11px}
+.fav{position:absolute;right:10px;top:10px;border:0;background:#fff;border-radius:50%;font-size:22px;width:35px;height:35px;color:#b8783d;cursor:pointer}
+
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.gallery img{width:100%;height:220px;object-fit:cover;border-radius:13px}
+
+.cart{background:#fff}
+.cart-item{display:flex;justify-content:space-between;border-bottom:1px solid #eee;padding:12px}
+.cart-item button{border:0;padding:5px 10px;cursor:pointer;border-radius:5px}
+#total{margin:20px 0;color:#b8783d}
+
+.contact{background:#2b211c;color:#fff}
+.contactGrid{align-items:start}
+.contactGrid p{margin:15px 0}
+.contactGrid form,.modalBox{background:#fff;padding:25px;border-radius:18px}
+.contactGrid input,.contactGrid textarea,.modalBox input{width:100%;padding:11px;margin-bottom:10px;bor
+
+der:1px solid #ddd;border-radius:8px}
+.contactGrid textarea{height:100px;resize:none}
+.contactGrid .btn,.modalBox .btn{width:100%}
+
+footer{background:#1d1612;color:#aaa;text-align:center;padding:20px}
+footer span{color:#d9a86c}
+
+.modal{position:fixed;inset:0;background:#0009;display:none;place-items:center;z-index:20}
+.modal.show{display:grid}
+.modalBox{width:90%;max-width:380px;position:relative}
+.modalBox h2{text-align:center;margin-bottom:15px}
+.close{position:absolute;left:18px;top:8px;font-size:25px;cursor:pointer}
+
+.dark{background:#191614;color:#eee}
+.dark .shop,.dark .product,.dark .cart{background:#211c19}
+.dark .title p,.dark .product p{color:#bbb}
+.dark .filters button,.dark .search input{background:#2b2521;color:#fff}
+
+@media(max-width:800px){
+.nav{position:absolute;right:-100%;top:70px;width:100%;padding:20px;background:#241a15;flex-direction:column;text-align:center;transition:.3s}
+.nav.show{right:0}.menu{display:block}
+.products{grid-template-columns:repeat(2,1fr)}
+.about,.contactGrid{grid-template-columns:1fr}
+.ad{flex-direction:column;text-align:center;gap:15px}
+}
+@media(max-width:550px){
+.products,.gallery{grid-template-columns:1fr}
+.features{flex-direction:column}
+.hero h1{font-size:40px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<nav class="container">
+<a class="logo" href="#home"><i class="fa-solid fa-mug-hot"></i> کافه لونا</a>
+
+<ul class="nav" id="nav">
+<li><a href="#home">خانه</a></li>
+<li><a href="#about">درباره</a></li>
+<li><a href="#shop">محصولات</a></li>
+<li><a href="#gallery">گالری</a></li>
+<li><a href="#contact">تماس</a></li>
+</ul>
+
+<div class="actions">
+<i class="fa-solid fa-moon" onclick="dark()"></i>
+<i class="fa-solid fa-heart" onclick="favList()"></i>
+<i class="fa-solid fa-user" onclick="login()"></i>
+<a href="#cart"><i class="fa-solid fa-cart-shopping"></i><b id="count">0</b></a>
+<i class="fa-solid fa-bars menu" onclick="nav.classList.toggle('show')"></i>
+</div>
+</nav>
+</header>
+
+<section class="hero" id="home">
+<div>
+<span>به کافه لونا خوش آمدید</span>
+<h1>یک فنجان قهوه،<br>یک لحظه آرامش</h1>
+<p>قهوه‌های خاص، غذاهای خوشمزه و لحظاتی به‌یادماندنی</p>
+<a href="#shop" class="btn">مشاهده محصولات</a>
+</div>
+</section>
+
+<div class="container">
+<div class="ad">
+<div><small>پیشنهاد ویژه</small><h2>۲۰٪ تخفیف اولین سفارش</h2><p>محصولات مورد علاقه خود را انتخاب کنید.</p></div>
+<a href="#shop" class="btn">خرید کنید</a>
+</div>
+</div>
+
+<section id="about">
+<div class="container">
+<div class="title">
+<span>درباره ما</span>
+<h2>داستان کافه لونا</h2>
+<p>طعم خوب، حال خوب</p>
+</div>
+
+<div class="about">
+<img src="download (4).jfif">
+
+<div>
+<h2>یک تجربه متفاوت از کافه</h2>
+<p>در کافه لونا بهترین قهوه‌ها، نوشیدنی‌ها و غذاها را در محیطی آرام و دوستانه ارائه می‌کنیم.</p>
+
+<div class="features">
+<div>☕<br>قهوه تازه</div>
+<div>🌿<br>مواد تازه</div>
+<div>❤️<br>محیط دوستانه</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="shop" id="shop">
+<div class="container">
+
+<div class="title">
+<span>فروشگاه</span>
+<h2>محصولات ما</h2>
+<p>محصول مورد نظر خود را پیدا کنید</p>
+</div>
+
+<div class="search">
+<input id="search" placeholder="جستجوی محصول..." oninput="search()">
+<i class="fa-solid fa-search"></i>
+</div>
+
+<div class="filters">
+<button class="active" onclick="filter('all',this)">همه</button>
+<button onclick="filter('coffee',this)">قهوه</button>
+<button onclick="filter('food',this)">غذا</button>
+<button onclick="filter('drink',this)">نوشیدنی</button>
+</div>
+
+<div class="products">
+
+<article class="product coffee" data-name="اسپرسو">
+<span class="sale">۱۰٪ تخفیف</span>
+<button class="fav" onclick="favorite(this,'اسپرسو')">♡</button>
+<img src="images.jfif">
+<div><h3>اسپرسو</h3><p>قهوه غلیظ و خوش‌عطر</p><strong>۸۱,۰۰۰ تومان</strong>
+<button class="btn" onclick="add('اسپرسو',81000)">افزودن به سبد</button></div>
+</article>
+
+<article class="product coffee" data-name="کاپوچینو">
+<button class="fav" onclick="favorite(this,'کاپوچینو')">♡</button>
+<img src="images (1).jfif"
+
+ges.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=700&q=80">
+<div><h3>کاپوچینو</h3><p>اسپرسو با شیر و فوم</p><strong>۱۱۰,۰۰۰ تومان</strong>
+<button class="btn" onclick="add('کاپوچینو',110000)">افزودن به سبد</button></div>
+</article>
+
+<article class="product coffee" data-name="لاته">
+<button class="fav" onclick="favorite(this,'لاته')">♡</button>
+<img src="images (2).jfif">
+<div><h3>لاته</h3><p>قهوه با شیر گرم</p><strong>۱۱۵,۰۰۰ تومان</strong>
+<button class="btn" onclick="add('لاته',115000)">افزودن به سبد</button></div>
+</article>
+
+<article class="product food" data-name="برگر لونا">
+<span class="sale">ویژه</span>
+<button class="fav" onclick="favorite(this,'برگر لونا')">♡</button>
+<img src="images (3).jfif">
+<div><h3>برگر لونا</h3><p>برگر مخصوص کافه</p><strong>۲۲۰,۰۰۰ تومان</strong>
+<button class="btn" onclick="add('برگر لونا',220000)">افزودن به سبد</button></div>
+</article>
+
+<article class="product food" data-name="پیتزا">
+<button class="fav" onclick="favorite(this,'پیتزا')">♡</button>
+<img src="images (4).jfif">
+<div><h3>پیتزا</h3><p>پیتزای مخصوص لونا</p><strong>۲۵۰,۰۰۰ تومان</strong>
+<button class="btn" onclick="add('پیتزا',250000)">افزودن به سبد</button></div>
+</article>
+
+<article class="product drink" data-name="موهیتو">
+<button class="fav" onclick="favorite(this,'موهیتو')">♡</button>
+<img src="images (5).jfif">
+<div><h3>موهیتو</h3><p>نوشیدنی خنک و تازه</p><strong>۱۲۰,۰۰۰ تومان</strong>
+<button class="btn" onclick="add('موهیتو',120000)">افزودن به سبد</button></div>
+</article>
+
+</div>
+</div>
+</section>
+
+<section id="gallery">
+<div class="container">
+<div class="title"><span>گالری</span><h2>فضای کافه</h2></div>
+<div class="gallery">
+<img src="download (1).jfif">
+<img src="download (2).jfif">
+<img src="download (3).jfif">
+<img src="download (4).jfif">
+</div>
+</div>
+</section>
+
+<section class="cart" id="cart">
+<div class="container">
+<div class="title"><span>سبد خرید</span><h2>سفارش شما</h2></div>
+<div id="items">سبد خرید خالی است.</div>
+<h3 id="total">مجموع: ۰ تومان</h3>
+<button class="btn" onclick="checkout()">ادامه پرداخت</button>
+</div>
+</section>
+
+<section class="contact" id="contact">
+<div class="container">
+<div class="title"><span>تماس با ما</span><h2>ارتباط با کافه</h2></div>
+
+<div class="contactGrid">
+<div>
+<p>📍 تهران، خیابان ولیعصر</p>
+<p>☎️ ۰۲۱-۱۲۳۴۵۶۷۸</p>
+<p>✉️ info@cafeluna.ir</p>
+</div>
+
+<form onsubmit="send(event)">
+<input placeholder="نام شما" required>
+<input type="email" placeholder="ایمیل" required>
+<textarea placeholder="پیام شما" required></textarea>
+<button class="btn">ارسال پیام</button>
+</form>
+</div>
+</div>
+</section>
+
+<footer>©️ 2026 <span>کافه لونا</span> | Cafe Luna</footer>
+
+<div class="modal" id="modal">
+<div class="modalBox">
+<span class="close" onclick="login()">×</span>
+<h2>ورود به حساب</h2>
+<input id="user" placeholder="نام کاربری">
+<input type="password" placeholder="رمز عبور">
+<button class="btn" onclick="enter()">ورود</button>
+</div>
+</div>
+
+<script>
+let cart=JSON.parse(localStorage.cart||'[]'),
+favs=JSON.parse(localStorage.favs||'[]'),
+$=x=>document.querySelector(x),
+all=()=>document.querySelectorAll('.product');
+
+function update(){
+$('#count').innerText=cart.length;
+$('#items').innerHTML=cart.length?cart.map((x,i)=>
+`<div class="cart-item">${x.name} - ${x.price.toLocaleString()} تومان <button onclick="remove(${i})">حذف</button></div>`
+).join(''):'سبد خرید خالی است.';
+$('#total').innerText='مجموع: '+cart.reduce((a,x)=>a+x.price,0).toLocaleString()+' تومان';
+localStorage.c
+
+art=JSON.stringify(cart);
+}
+
+function add(n,p){cart.push({name:n,price:p});update();alert(n+' به سبد اضافه شد')}
+function remove(i){cart.splice(i,1);update()}
+
+function filter(t,b){
+document.querySelectorAll('.filters button').forEach(x=>x.classList.remove('active'));
+b.classList.add('active');
+all().forEach(x=>x.style.display=t=='all'||x.classList.contains(t)?'block':'none')
+}
+
+function search(){
+let q=$('#search').value.toLowerCase();
+all().forEach(x=>x.style.display=x.dataset.name.includes(q)?'block':'none')
+}
+
+function favorite(b,n){
+favs.includes(n)?favs=favs.filter(x=>x!=n):favs.push(n);
+b.innerText=favs.includes(n)?'♥️':'♡';
+localStorage.favs=JSON.stringify(favs)
+}
+
+function favList(){alert(favs.length?'علاقه‌مندی‌ها:\n'+favs.join('، '):'لیست علاقه‌مندی خالی است')}
+function dark(){$('body').classList.toggle('dark');localStorage.dark=$('body').classList.contains('dark')}
+function login(){$('#modal').classList.toggle('show')}
+
+function enter(){
+let n=$('#user').value;
+n?(localStorage.user=n,alert('خوش آمدید '+n),login()):alert('نام کاربری را وارد کنید')
+}
+
+function checkout(){alert(cart.length?'این بخش به درگاه پرداخت متصل می‌شود.':'سبد خرید خالی است')}
+function send(e){e.preventDefault();alert('پیام شما ارسال شد!');e.target.reset()}
+
+if(localStorage.dark=='true')$('body').classList.add('dark');
+update();
+document.querySelectorAll('.nav a').forEach(a=>a.onclick=()=>$('#nav').classList.remove('show'));
+</script>
+
+</body>
+</html>
